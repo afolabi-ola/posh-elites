@@ -16,7 +16,7 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className='text-3xl md:text-5xl font-display text-primary'
+          className='text-3xl md:text-5xl font-display text-primary font-miama'
         >
           About us
         </motion.h2>
@@ -25,7 +25,7 @@ export default function AboutSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: 'easeOut', delay: 0.08 }}
-          className='mx-auto max-full text-lg md:text-xl leading-relaxed text-text/90'
+          className='mx-auto max-full text-lg md:text-xl leading-relaxed text-text/90 font-mali'
         >
           More Than Events — It’s a Lifestyle (With a Dash of Drama and
           Champagne) The Posh Elites is your favorite luxury lifestyle brand —

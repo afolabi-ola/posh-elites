@@ -12,24 +12,21 @@ const slides = [
   {
     id: 1,
     title: 'Flirt & fire',
-    description:
-      'This Valentine\'s, step into a night of passion, energy, and elite entertainment. "Flirt & Fire" is more than just a party—it\'s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.',
+    description: `This Valentine’s, step into a night of passion, energy, and elite entertainment. “Flirt & Fire” is more than just a party—it’s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.`,
     image: slideOneImg,
     background: slideOneBackground,
   },
   {
     id: 2,
     title: 'Escapades',
-    description:
-      'This Valentine\'s, step into a night of passion, energy, and elite entertainment. "Flirt & Fire" is more than just a party—it\'s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.',
+    description: `This Valentine’s, step into a night of passion, energy, and elite entertainment. “Flirt & Fire” is more than just a party—it’s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.`,
     image: slideTwoImg,
     background: slideTwoBackground,
   },
   {
     id: 3,
     title: 'All White Mask',
-    description:
-      'This Valentine\'s, step into a night of passion, energy, and elite entertainment. "Flirt & Fire" is more than just a party—it\'s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.',
+    description: `This Valentine’s, step into a night of passion, energy, and elite entertainment. “Flirt & Fire” is more than just a party—it’s an electrifying experience with premium cocktails, VIP exclusives, and a curated atmosphere designed for unforgettable moments.`,
     image: slideThreeImg,
     background: slideThreeBackground,
   },
@@ -78,7 +75,7 @@ export default function UpcomingEventsSection() {
             <img
               src={current.image}
               alt={current.title}
-              className='w-48 md:w-full md:max-w-lg rounded-2xl shadow-2xl'
+              className='w-full md:w-full md:max-w-lg rounded-2xl shadow-2xl'
             />
           </motion.div>
         </AnimatePresence>
@@ -143,13 +140,13 @@ export default function UpcomingEventsSection() {
               transition={{ duration: 0.5 }}
               className='bg-[#FFF6F0B5] backdrop-blur-sm rounded-3xl p-4 md:p-10 shadow-2xl'
             >
-              <p className='text-xs md:text-sm uppercase tracking-widest text-text mb-2 font-bold'>
+              <p className='text-xs md:text-sm uppercase tracking-widest text-text mb-2 font-bold font-montserrat'>
                 Upcoming Event
               </p>
-              <h2 className='text-base md:text-4xl sm:font-extralight text-text mb-4'>
+              <h2 className='text-base md:text-4xl sm:font-extralight text-text mb-4 font-mooli'>
                 {current.title}
               </h2>
-              <p className='text-xs md:text-lg text-text/80 leading-relaxed mb-6'>
+              <p className='text-xs md:text-lg text-text/80 leading-relaxed mb-6 font-mali'>
                 {current.description}
               </p>
               <button className='px-8 py-3 bg-primary text-white rounded-lg font-semibold hover:bg-secondary/95 hover:text-primary transition-colors'>

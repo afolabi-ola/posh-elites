@@ -128,7 +128,7 @@ export function Navigation() {
     <>
       {/* Main Navigation */}
       <motion.nav
-        className={`relative md:fixed md:top-0 md:left-0 md:right-0 z-40 w-full transition-all duration-300 ${
+        className={`relative md:fixed md:top-0 md:left-0 md:right-0 z-40 w-full transition-all duration-300 font-monda ${
           scrolled
             ? 'bg-primary backdrop-blur-md shadow-sm'
             : ' bg-primary backdrop-blur-sm'

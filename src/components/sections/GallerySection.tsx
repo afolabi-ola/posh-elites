@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import galleryOneFront from '@/assets/images/gallery-img-one-front.svg';
 import galleryOneBack from '@/assets/images/gallery-img-one-back.svg';
 import galleryTwoFront from '@/assets/images/gallery-img-two-front.svg';
@@ -32,20 +32,6 @@ const FLIP_MS = 1000;
 const SHIFT_MS = 800;
 const HOLD_MS = 2000;
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== 'undefined' ? window.innerWidth < 768 : false,
-  );
-
-  useEffect(() => {
-    const handler = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handler);
-    return () => window.removeEventListener('resize', handler);
-  }, []);
-
-  return isMobile;
-}
-
 function preloadImages(srcs: string[]) {
   srcs.forEach((src) => {
     const img = new Image();
@@ -56,20 +42,12 @@ function preloadImages(srcs: string[]) {
 export default function GallerySection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     preloadImages(cards.flatMap((c) => [c.front, c.back]));
   }, []);
 
   useEffect(() => {
-    if (isMobile) {
-      const id = setInterval(() => {
-        setCurrentIndex((prev) => (prev + 1) % cards.length);
-      }, HOLD_MS + SHIFT_MS);
-      return () => clearInterval(id);
-    }
-
     let active = true;
     const run = async () => {
       while (active) {
@@ -86,7 +64,7 @@ export default function GallerySection() {
     return () => {
       active = false;
     };
-  }, [isMobile]);
+  }, []);
 
   const prevIndex = (currentIndex - 1 + cards.length) % cards.length;
   const nextIndex = (currentIndex + 1) % cards.length;
@@ -111,7 +89,7 @@ export default function GallerySection() {
   return (
     <section id='gallery' className='bg-secondary py-12 md:py-20 px-4 md:px-6'>
       <div className='max-w-7xl mx-auto'>
-        <div className='text-center mb-10 md:mb-14 space-y-3'>
+        <div className='text-center mb-6 md:mb-14 space-y-3'>
           <h2 className='text-4xl md:text-5xl font-miama text-text'>
             Our World
           </h2>
@@ -124,96 +102,75 @@ export default function GallerySection() {
           </p>
         </div>
 
-        {/* Desktop 3D Carousel */}
-        {!isMobile && (
-          <div
-            className='relative h-130 md:h-155 w-full flex items-center justify-center overflow-hidden'
-            style={perspectiveStyle}
-          >
-            {visibleIds.map((id) => {
-              const card = cards[id];
-              const slot = getSlot(id);
-              const isCurrent = id === currentIndex;
+        {/* 3D Carousel (Desktop and Mobile) */}
+        <div
+          className='relative h-90 md:h-155 w-full flex items-center justify-center overflow-hidden'
+          style={perspectiveStyle}
+        >
+          {visibleIds.map((id) => {
+            const card = cards[id];
+            const slot = getSlot(id);
+            const isCurrent = id === currentIndex;
 
-              return (
-                <motion.div
-                  key={card.id}
-                  className='absolute w-[64%] md:w-[52%] aspect-4/3 rounded-[28px] shadow-2xl'
-                  animate={{
-                    x: slot.x,
-                    y: slot.y,
-                    scale: slot.scale,
-                    opacity: slot.opacity,
-                    zIndex: slot.zIndex,
-                  }}
-                  transition={{ duration: 0.8, ease: 'easeInOut' }}
+            return (
+              <motion.div
+                key={card.id}
+                className='absolute w-[64%] md:w-[52%] aspect-4/3 rounded-[28px] shadow-2xl'
+                animate={{
+                  x: slot.x,
+                  y: slot.y,
+                  scale: slot.scale,
+                  opacity: slot.opacity,
+                  zIndex: slot.zIndex,
+                }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                <div
+                  className='relative w-full h-full'
                   style={{ transformStyle: 'preserve-3d' }}
                 >
-                  <div
-                    className='relative w-full h-full'
-                    style={{ transformStyle: 'preserve-3d' }}
+                  <motion.div
+                    className='absolute inset-0 rounded-[28px] overflow-hidden'
+                    style={{ backfaceVisibility: 'hidden' }}
+                    animate={{ rotateY: isCurrent && isFlipping ? 180 : 0 }}
+                    transition={{
+                      duration: FLIP_MS / 1000,
+                      ease: 'easeInOut',
+                    }}
                   >
-                    <motion.div
-                      className='absolute inset-0 rounded-[28px] overflow-hidden'
-                      style={{ backfaceVisibility: 'hidden' }}
-                      animate={{ rotateY: isCurrent && isFlipping ? 180 : 0 }}
-                      transition={{
-                        duration: FLIP_MS / 1000,
-                        ease: 'easeInOut',
-                      }}
-                    >
-                      <img
-                        src={card.front}
-                        alt={`Gallery ${card.id} front`}
-                        className='w-full h-full object-cover'
-                        draggable={false}
-                      />
-                    </motion.div>
+                    <img
+                      src={card.front}
+                      alt={`Gallery ${card.id} front`}
+                      className='w-full h-full object-cover'
+                      draggable={false}
+                    />
+                  </motion.div>
 
-                    <motion.div
-                      className='absolute inset-0 rounded-[28px] overflow-hidden aspect-4/3'
-                      style={{
-                        backfaceVisibility: 'hidden',
-                        transform: 'rotateY(180deg)',
-                      }}
-                      animate={{ rotateY: isCurrent && isFlipping ? 360 : 180 }}
-                      transition={{
-                        duration: FLIP_MS / 1000,
-                        ease: 'easeInOut',
-                      }}
-                    >
-                      <img
-                        src={card.back}
-                        alt={`Gallery ${card.id} back`}
-                        className='w-full h-full object-cover'
-                        draggable={false}
-                      />
-                    </motion.div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Mobile simplified carousel */}
-        {isMobile && (
-          <div className='relative h-105 overflow-hidden rounded-3xl'>
-            <AnimatePresence mode='popLayout' initial={false}>
-              <motion.img
-                key={currentIndex}
-                src={cards[currentIndex].front}
-                alt={`Gallery ${cards[currentIndex].id}`}
-                className='absolute inset-0 w-full h-full object-cover rounded-3xl'
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, ease: 'easeInOut' }}
-                draggable={false}
-              />
-            </AnimatePresence>
-          </div>
-        )}
+                  <motion.div
+                    className='absolute inset-0 rounded-[28px] overflow-hidden aspect-4/3'
+                    style={{
+                      backfaceVisibility: 'hidden',
+                      transform: 'rotateY(180deg)',
+                    }}
+                    animate={{ rotateY: isCurrent && isFlipping ? 360 : 180 }}
+                    transition={{
+                      duration: FLIP_MS / 1000,
+                      ease: 'easeInOut',
+                    }}
+                  >
+                    <img
+                      src={card.back}
+                      alt={`Gallery ${card.id} back`}
+                      className='w-full h-full object-cover'
+                      draggable={false}
+                    />
+                  </motion.div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
